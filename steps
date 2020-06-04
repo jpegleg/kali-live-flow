@@ -1,14 +1,13 @@
+#!/usr/bin/env bash
 echo "run as root, sudo su first if user kali"
+echo "changing password for root..."
 passwd
+echo "changing password for kali..."
 passwd kali
+echo "installing packages"
 apt-get install -y aptitude
 aptitude update -y
 aptitude upgrade -y
 aptitude install -y redshift
 redshift -O 1337
 aptitude install -y fonts-noto-color-emoji
-su - kali
-git clone https://github.com/jpegleg/jpegleg-vimrc
-cp jpegleg-vimrc/.vimrc ~/
-exit
-cp /home/kali/.vimrc ~/
