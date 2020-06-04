@@ -1,4 +1,4 @@
-sudo su -
+echo "run as root, sudo su first if user kali"
 passwd
 passwd kali
 apt-get install -y aptitude
