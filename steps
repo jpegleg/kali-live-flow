@@ -1,0 +1,14 @@
+sudo su -
+passwd
+passwd kali
+apt-get install -y aptitude
+aptitude update -y
+aptitude upgrade -y
+aptitude install -y redshift
+redshift -O 1337
+aptitude install -y fonts-noto-color-emoji
+su - kali
+git clone https://github.com/jpegleg/jpegleg-vimrc
+cp jpegleg-vimrc/.vimrc ~/
+exit
+cp /home/kali/.vimrc ~/
