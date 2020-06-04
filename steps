@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-restartupdate () { echo "sleeping for 5 minutes then will try again..."; sleep 300 && aptitude update -y || restartmebaby; }
+restartupdate () { echo "sleeping for 5 minutes then will try again..."; sleep 300 && aptitude update -y || restartupdate; }
 echo "changing password for root..."
 passwd root
 echo "changing password for kali..."
