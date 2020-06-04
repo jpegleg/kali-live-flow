@@ -5,7 +5,7 @@ passwd root
 echo "changing password for kali..."
 passwd kali
 echo "installing packages"
-apt-get install -y aptitude
+apt-get install -y aptitude apt-transport-https
 aptitude update -y || restartupdate
 aptitude upgrade -y
 aptitude install -y redshift
