@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-echo "run as root, sudo su first if user kali"
+restartmebaby () { echo "sleeping for 5 minutes then will try again..."; sleep 300 && aptitude update -y || restartmebaby; }
 echo "changing password for root..."
-passwd
+passwd root
 echo "changing password for kali..."
 passwd kali
 echo "installing packages"
 apt-get install -y aptitude
-aptitude update -y
+aptitude update -y || restartmebaby
 aptitude upgrade -y
 aptitude install -y redshift
 redshift -O 1337
