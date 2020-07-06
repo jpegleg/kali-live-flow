@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+echo "changing password for root..."
+s=$(openssl rand -hex 12)
+echo -e "$s\n$s" | passwd root
+echo "changing password for kali..."
+echo -e "$s\n$s" | passwd kali
+echo "installing packages"
+apt-get install -y aptitude apt-transport-https
+aptitude install -y redshift
+redshift -O 5555
+aptitude install -y fonts-noto-color-emoji
