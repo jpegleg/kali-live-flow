@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+restartupdate () { echo "sleeping for 5 minutes then will try again..."; sleep 300 && aptitude update -y || restartupdate; }
+echo "changing password for root..."
+s=$(openssl rand -hex 12)
+echo -e "$s\n$s" | passwd root
+echo "changing password for kali..."
+echo -e "$s\n$s" | passwd kali
+echo "installing packages"
+apt-get install -y aptitude apt-transport-https
+aptitude update -y || restartupdate
+aptitude upgrade -y
+aptitude install -y redshift
+redshift -O 1337
+aptitude install -y fonts-noto-color-emoji
