@@ -1,8 +1,42 @@
 #!/usr/bin/env bash
-echo "changing password for root..."
-s=$(openssl rand -hex 32)
+echo "backing up old rx and ix files"
+tar czvf ~/rxix.$(date +%Y%m%d%H%M%S).tgz ~/.rx_loader ~/.ix_loader 2>/dev/null
+chmod 600 ~/rxix*.tgz
+chown root:root ~/rx*.tgz
+echo "changing password for root to some random long password know one will know"
+s=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-96)
 echo -e "$s\n$s" | passwd root
-echo "changing password for kali..."
-echo -e "$s\n$s" | passwd kali
+unset s
+echo "changing host keys..."
+ogkeys ~/backup_hostkeys.$(date +%Y%m%d%H%M%S).tgz /etc/ssh/ssh_host*
+rx=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-128)
+ix=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-128)
+echo "export rx=$rx" > ~/.rx_loader
+echo "export ix=$ix" > ~/.ix_loader
+chmod 600 ~/.rx_loader
+chmod 600 ~/.ix_loader
+echo "rx and ix loader strings saved in ~/.rx_loader and ~/.ix_loader"
+echo "using $rx for new host key password string"
+yes | ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -P $rx -r localhost -y -C root@domain.local
+yes | ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_dsa.key -P $rx -C root@domain.local
+yes | ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -P $rx -C root@domain.local
+unset rx
+echo "using $ix for new root ssh key password string"
+yes | ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -P $ix -C root@domain.local
+yes | ssh-keygen -t ecdsa -f ~/.ssh/id_ecdsa -P $ix -C root@domain.local
+yes | ssh-keygen -t dsa -f ~/.ssh/id_dsa -P $ix -C root@domain.local
+yes | ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -P $ix -C root@domain.local
+unset ix
+echo "new machine id..."
+mid=$(openssl rand -hex 16)
+echo $mid > /var/lib/dbus/machine-id
+echo $mid > /etc/machine-id
+unset mid
+echo "new MAC address..."
+macchanger -r eth0
 echo "installing packages"
-apt-get install -y aptitude 
+apt-get install -y apt-transport-https
+sed -i "s/deb http:/deb https:/g" /etc/apt/sources.list
+apt-get install -y aptitude
+aptitude hold fonts-cantarell fonts-firacode
+aptitude update -y
