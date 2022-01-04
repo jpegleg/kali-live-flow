@@ -38,5 +38,5 @@ echo "installing packages"
 apt-get install -y apt-transport-https
 sed -i "s/deb http:/deb https:/g" /etc/apt/sources.list
 apt-get install -y aptitude
-aptitude hold fonts-cantarell fonts-firacode
+aptitude hold fonts-cantarell
 aptitude update -y
