@@ -8,7 +8,7 @@ s=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-96)
 echo -e "$s\n$s" | passwd root
 unset s
 echo "changing host keys..."
-ogkeys ~/backup_hostkeys.$(date +%Y%m%d%H%M%S).tgz /etc/ssh/ssh_host*
+tar czvf ~/backup_hostkeys.$(date +%Y%m%d%H%M%S).tgz /etc/ssh/ssh_host*
 rx=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-128)
 ix=$(cat /dev/urandom | head -n12 | b2sum | cut -c1-128)
 echo "export rx=$rx" > ~/.rx_loader
